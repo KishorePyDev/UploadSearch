@@ -5,7 +5,10 @@
     <classes>
       <class name="com.search.by.image.test.uploadSearch">
         <methods>
+          <include name="searchImage"/>
+          <include name="verifyTitle"/>
           <include name="validateMessage"/>
+          <include name="countLink"/>
         </methods>
       </class> <!-- com.search.by.image.test.uploadSearch -->
     </classes>

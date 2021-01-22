@@ -18,32 +18,38 @@ public class uploadSearch extends BaseUI{
 	public void searchImage() throws InterruptedException
 	{
 		invokeBrowser("firefox");
-		openURL("https://www.google.com");
-		elementClick("//a[text()='Images']");
+		openURL("websiteURL");
+		elementClick("imgButn_xpath");
 	
-		elementClick("//*[@id=\'sbtc\']/div/div[3]/div[2]");
-		elementClick("//*[@id=\"dRSWfb\"]/div/a");
-		uploadImage("encoded_image", "/home/kishore/Pictures/ronaldo.jpg");
+		elementClick("imgIcon_xpath");
+		elementClick("uploadImgButn_xpath");
+		uploadImage("chooseFileButn", "uploadImagePath");
 	}
 	
-	@Test
+	@Test(dependsOnMethods="searchImage")
 	public void verifyTitle() throws InterruptedException
 	{
 	
 		WebDriverWait wait = new WebDriverWait(driver,25);
 		String title = getTitle();
 		wait.until(ExpectedConditions.titleContains(title));
-	    Assert.assertEquals(title, "Google Search");
+	    Assert.assertEquals(title, "Google Images");
 	}
 	
-	@Test
+	@Test(dependsOnMethods="verifyTitle")
 	public void validateMessage() throws InterruptedException
 	{
 		String msg=aboutMessage("result-stats");
-		System.out.println(msg);
+		Reporter.log(msg);
 		screenShot();
+	}
+	
+	@Test(dependsOnMethods="validateMessage")
+	public void countLink() throws InterruptedException
+	{
 		List<WebElement> count=linkCount("a");
-		System.out.println(count.size());
+		int val = count.size();
+		Reporter.log("Total No.of Links"+val);
 	}
 	
 
