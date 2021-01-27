@@ -23,53 +23,52 @@ public class BaseUI {
 
 	public WebDriver driver;
 	public Properties prop;
-
-	public void invokeBrowser(String browserName) 
+	
+	/**
+	 * @Author : Kishore Kumar S
+	 * Date :26/01/2021
+	 * Description: This function implements the multiple broswers
+	 * get the value from testing.xml file as paramaters
+	 */
+	public void invokeBrowser() 
 	{
-		if (browserName.equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir") +
-					"/src/test/resources/drivers/chromedriver");
+		
+		//String name=prop.getProperty("bName");
+		String name="chrome";
+		//System.out.println(prop.getProperty("bName"));
+		System.out.println(prop.getProperty("websiteURL"));
+		if (name=="chrome") 
+		{
+			System.setProperty("webdriver.chrome.driver",
+					System.getProperty("user.dir") + "/src/test/resources/drivers/chromedriver");
 			driver = new ChromeDriver();
-
-		} else if (browserName.equalsIgnoreCase("firefox")) {
-			System.setProperty("webdriver.gecko.driver",System.getProperty("user.dir")+
-					"/src/test/resources/drivers/geckodriver");
-			driver = new FirefoxDriver();
 		}
+		
+//		} else if (prop.getProperty(browserName).equalsIgnoreCase("firefox")) {
+//			System.setProperty("webdriver.gecko.driver",
+//					System.getProperty("user.dir") + "/src/test/resources/drivers/geckodriver");
+//			driver = new FirefoxDriver();
+//		}
 
 		driver.manage().timeouts().implicitlyWait(180, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
 
-
-		if (prop == null) 
-		{
+		if (prop == null) {
 			prop = new Properties();
-			try 
-			{
+			try {
 				FileInputStream file = new FileInputStream(
-						System.getProperty("user.dir") + 
-						"/src/test/resources/ObjectRepo/config.properties");
+						System.getProperty("user.dir") + "/src/test/resources/ObjectRepo/config.properties");
 				prop.load(file);
-			} catch (Exception e) 
-			{
+			} catch (Exception e) {
 
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void openURL(String websiteURLKey) 
-	{
+	public void openURL(String websiteURLKey) {
 		driver.get(prop.getProperty(websiteURLKey));
-	}
-
-	public void tearDown() {
-		driver.close();
-	}
-
-	public void quitBrowser() {
-		driver.quit();
 	}
 
 	public void elementClick(String xpathKey) {
@@ -80,16 +79,22 @@ public class BaseUI {
 		driver.findElement(By.name(prop.getProperty(nameKey))).sendKeys(prop.getProperty(dataKey));
 	}
 
+	
 	public String getTitle() throws InterruptedException {
-		Thread.sleep(2000);
+
 		return driver.getTitle();
 	}
 
 	public String aboutMessage(String id) throws InterruptedException {
-		Thread.sleep(3000);
+	
 		return driver.findElement(By.id(id)).getText();
 	}
 
+	/**
+	 * @Author : Kishore Kumar S
+	 * Date :26/01/2021
+	 * Description: This function capture the screenshot of webpage
+	 */
 	public void screenShot() throws InterruptedException {
 
 		File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -103,11 +108,16 @@ public class BaseUI {
 	}
 
 	public List<WebElement> linkCount(String tagName) throws InterruptedException {
-		Thread.sleep(4000);
+	
 		WebDriverWait wait = new WebDriverWait(driver, 50);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName(tagName)));
 		return driver.findElements(By.tagName(tagName));
 
+	}
+	
+	public void tearDown() 
+	{
+		driver.close();
 	}
 
 }

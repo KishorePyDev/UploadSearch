@@ -6,7 +6,9 @@
       <class name="com.search.by.image.test.uploadSearch">
         <methods>
           <include name="searchImage"/>
+          <include name="setup"/>
           <include name="verifyTitle"/>
+          <include name="closeBroswer"/>
           <include name="validateMessage"/>
           <include name="countLink"/>
         </methods>
